@@ -1,7 +1,201 @@
 - Class: meta
   Course: exercise_REcoStat2020
   Lesson: ggplot2_exercise
-  Author: your name goes here
+  Author: Maria Novosolov
   Type: Standard
-  Organization: your organization's name goes here
+  Organization: GLOBE Institute, University of Copenhagen
   Version: 2.4.5
+
+- Class: text
+  Output: |
+    In this exercise you will practice things you learned during the lesson and then have a final exercise
+    that sums up everything in which you will be asked to produce a publication quality plot. Please 
+    write all the code that you are submitting to the questions below within an Rmd with text explaining 
+    what you are doing and a short description of what you are seeing in the plot. In the end knit the Rmd
+    to an html and submit the html to me through absalon. For any questions please contact me on slack.´ß´ß
+    
+- Class: cmd_question
+  Output: Set the working directory to where you store your data
+  CorrectAnswer: setwd("~/your/path/to/the/data/folder")
+  AnswerTests: expr_uses_func('setwd')
+  Hint: Type the path to where your data is inside double quotes
+
+- Class: cmd_question
+  Output: load the ggplot2 package
+  CorrectAnswer: library(ggplot2)
+  AnswerTests: omnitest(correctExpr = 'library(ggplot2)')
+  Hint: use the function library
+
+- Class: cmd_question
+  Output: load the tidyverse package
+  CorrectAnswer: library(tidyverse)
+  AnswerTests: omnitest(correctExpr = 'library(tidyverse)')
+  Hint: use the function library
+  
+- Class: cmd_question
+  Output: load the RColorBrewer package
+  CorrectAnswer: library(RColorBrewer)
+  AnswerTests: omnitest(correctExpr = 'library(RColorBrewer)')
+  Hint: use the function library
+
+- Class: text
+  Output: We will start with some basic plots to understand the layering system and then we will continue to practicing different types of plots
+  
+- Class: cmd_question
+  Output: load the subsetted PANTHERIA dataset and assign it to pan.data
+  CorrectAnswer: pan.data <- read_csv("your/path/to/the/csv")
+  AnswerTests: expr_uses_func('read_csv')
+  Hint: use the a function to read csv as we did in the class  
+  
+- Class: cmd_question
+  Output: create a scatter plot of Litters per year as a function of body mass
+  CorrectAnswer: ggplot(pan.data,aes(AdultBodyMass,LittersPerYear)) + geom_point()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(AdultBodyMass,LittersPerYear)) + geom_point()')
+  Hint: follow the tamplate ggplot(data,aes(x,y)) + geom_
+
+- Class: cmd_question
+  Output: The plot looks a bit weird with all the points at the bottom. How would you transform it to make it more informative 
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear)) + geom_point()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear)) + geom_point()')
+  Hint: Go back to the class presentation and see which transformation we used when doing the scatter plot
+  
+- Class: cmd_question
+  Output: add Terrestriality as the color grouping
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality)) + geom_point()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality)) + geom_point()')
+  Hint: 
+   
+- Class: cmd_question
+  Output: Add the shape of the the points based on activity cycle
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle)) + geom_point()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle)) + geom_point()')
+  Hint:   
+  
+- Class: cmd_question
+  Output: Change the color of points using a color brewer palette
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle)) + geom_point() + scale_color_brewer(palette = "Set1")
+  AnswerTests: expr_uses_func('scale_color_brewer')
+  Hint: google how to scale color with R color Brewer  
+  
+- Class: cmd_question
+  Output: make the shapes in different sizes according to the litter size (also change your color palette to use 'Set1')
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle,size = LitterSize)) + geom_point() + scale_color_brewer(palette = "Set1")
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle,size = LitterSize)) + geom_point() + scale_color_brewer(palette = "Set1")')
+  Hint: Remember that all aesthetics need to be defined at the aes() in the ggplot function
+  
+- Class: cmd_question
+  Output: facet the plot to have a separate plot for each Terrestriality group
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle,size = LitterSize)) + geom_point() + scale_color_brewer(palette = "Set1") + facet_wrap(Terrestriality~.)
+  AnswerTests: expr_uses_func('facet_wrap')
+  Hint: Go back to the lesson and see how we facetted using one group
+
+- Class: cmd_question
+  Output: facet the plot to have a separate plot for each Terrestriality group and diet breadth
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle,size = LitterSize)) + geom_point() + scale_color_brewer(palette = "Set1") + facet_grid(Terrestriality~DietBreadth)
+  AnswerTests: expr_uses_func('facet_grid')
+  Hint: Go back to the lesson and see how we facetted using two groups
+  
+- Class: cmd_question
+  Output: Change the theme of your previous plot to a minimal type 
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),LittersPerYear,color = Terrestriality,shape=ActivityCycle,size = LitterSize)) + geom_point() + scale_color_brewer(palette = "Set1") + facet_grid(Terrestriality~DietBreadth) + theme_minimal()
+  AnswerTests: expr_uses_func('theme_minimal')
+  Hint: In the lesson we used theme_light() to get a light type of theme. Think how would you translate this function to get a minimal type
+
+- Class: text
+  Output: Now that we completed playing around with point plots lets practice some other types of plots. We'll start with a boxplot
+  
+- Class: cmd_question
+  Output: plot a boxplot of the home range for each diet breadth
+  CorrectAnswer: ggplot(pan.data,aes(DietBreadth,HomeRange)) + geom_boxplot()
+  AnswerTests: expr_uses_func('geom_boxplot')
+  Hint: Go back to the lesson and see how we did a box plot there 
+  
+- Class: text_question
+  Output: The plot doesn't look like a boxplot... How would you fix it?
+  CorrectAnswer: We need to convert the diet breadth to a character and log transform the home range
+  AnswerTests: val_matches('[character|categorical]')
+  Hint: notice that diet breadth is numerical but boxplot is a plot to use when the parameter on the x-axis is categorical
+
+- Class: cmd_question
+  Output: plot the boxplot with the transformation you decided on
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),HomeRange)) + geom_boxplot()
+  AnswerTests: expr_uses_func('as.character')
+  Hint: Try to figure out how to change a continuous variable to a character one in R and add it for the DietBreadth variable
+  
+- Class: text_question
+  Output: You figured out that diet breadth need to be converted to character but if all your boxes are at the bottom you still need to do another transformation to see the boxes at a normal position. What is it? (if your boxplot looks good type skip() in the console)
+  CorrectAnswer: We need to log transform the home range
+  AnswerTests: val_matches('log')
+  Hint: notice that the hame range values range between almost zero to 2000, how did we fix this difference in magnitude for the adult body mass in the previous plots?
+  
+- Class: cmd_question
+  Output: plot the box plot with transformation for home range
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange)) + geom_boxplot()
+  AnswerTests: expr_uses_func('log10')
+  Hint: Go back to the lesson and see how we transformed the body mass   
+  
+- Class: cmd_question
+  Output: Add Terrestriality as a color variable
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange),color = Terrestriality)) + geom_boxplot()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange),color = Terrestriality)) + geom_boxplot()')
+  Hint: Remember how we added color to the points   
+  
+- Class: cmd_question
+  Output: The boxes them selves are still white, how would you change that?
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange),fill = Terrestriality)) + geom_boxplot()
+  AnswerTests: omnitest(correctExpr='ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange),fill = Terrestriality)) + geom_boxplot()')
+  Hint: You want to fill the boxes with color   
+  
+- Class: text
+  Output: Now lets practice using google for figuring out how to plot things we didn't learn
+  
+- Class: cmd_question
+  Output: Make a violin plot instead of a basic boxplot
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange))) + geom_violin()
+  AnswerTests: expr_uses_func('geom_violin')
+  Hint: google violin plot in ggplot  
+
+- Class: cmd_question
+  Output: Change the name of the axis for x and y
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange))) + geom_violin() + xlab("Diet breadth") + ylab("log10 home range")
+  AnswerTests: expr_uses_func('xlab','ylab')
+  Hint: google how to change axis names in ggplot 
+  
+- Class: cmd_question
+  Output: Plot a scatterplot of home range as a function of body mass and add a regression line to it with standard error
+  CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),log10(HomeRange))) + geom_point() + stat_smooth(method = "lm")
+  AnswerTests: expr_uses_func('stat_smooth(method = "lm")')
+  Hint: google stat smooth function
+  
+  
+- Class: cmd_question
+  Output: plot a histogram for home range and change the bin size to 10
+  CorrectAnswer: ggplot(pan.data,aes(log10(HomeRange))) + geom_histogram(bins = 10)
+  AnswerTests: expr_uses_func('geom_histogram(bins = 10)')
+  Hint: google stat smooth function  
+  
+- Class: text
+  Output: |
+    Congratulations! by now you should be a beginner expert in ggplot2 but 
+    the world of ggplot is a vast as the universe itself, and ggplot itself is 
+    just the tip of the iceberg of visualisations in R.
+  
+- Class: text
+  Output: |
+    This is the final exercise whichI want you to add at the end of your Rmd. 
+    Here we will try to learn how to create publication quality plots.
+    Please put the following several plots side by side - 
+    1. population density vs body mass with trophic level as a grouping 
+    2. home range vs body mass with trophic level as a grouping 
+    3. home range vs diet breadth with trophic level as a color grouping
+    4. longevity vs diet breadth with trophic level as a color grouping
+    For each of the plots make sure the axis names are informative, that 
+    there is a title for each plot, that the colors are similar between the plots, 
+    and that the theme is not the default one but more aesthetically pleasing.
+    Remove the legend for all the plots and add it in writing as a caption before 
+    the plot. Add a numbering or lettering for each plot.
+    Please in the same caption also explain what each plot represents and in a 
+    few words describe what you see in the plot and what is its biological meaning.
+  
+  
+  
