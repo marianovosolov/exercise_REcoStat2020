@@ -171,7 +171,7 @@
   Output: plot a histogram for home range and change the bin size to 10
   CorrectAnswer: ggplot(pan.data,aes(log10(HomeRange))) + geom_histogram(bins = 10)
   AnswerTests: expr_uses_func('geom_histogram')
-  Hint: google stat smooth function  
+  Hint: google change bins in histogram ggplot
   
 - Class: text
   Output: |
