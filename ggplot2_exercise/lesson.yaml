@@ -130,7 +130,7 @@
   
 - Class: cmd_question
   Output: plot the box plot with transformation for home range
-  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange)) + geom_boxplot()
+  CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange))) + geom_boxplot()
   AnswerTests: expr_uses_func('log10')
   Hint: Go back to the lesson and see how we transformed the body mass   
   
@@ -158,20 +158,19 @@
 - Class: cmd_question
   Output: Change the name of the axis for x and y
   CorrectAnswer: ggplot(pan.data,aes(as.character(DietBreadth),log10(HomeRange))) + geom_violin() + xlab("Diet breadth") + ylab("log10 home range")
-  AnswerTests: expr_uses_func('xlab','ylab')
+  AnswerTests: expr_uses_func('xlab')
   Hint: google how to change axis names in ggplot 
   
 - Class: cmd_question
   Output: Plot a scatterplot of home range as a function of body mass and add a regression line to it with standard error
   CorrectAnswer: ggplot(pan.data,aes(log10(AdultBodyMass),log10(HomeRange))) + geom_point() + stat_smooth(method = "lm")
-  AnswerTests: expr_uses_func('stat_smooth(method = "lm")')
+  AnswerTests: expr_uses_func('stat_smooth')
   Hint: google stat smooth function
-  
   
 - Class: cmd_question
   Output: plot a histogram for home range and change the bin size to 10
   CorrectAnswer: ggplot(pan.data,aes(log10(HomeRange))) + geom_histogram(bins = 10)
-  AnswerTests: expr_uses_func('geom_histogram(bins = 10)')
+  AnswerTests: expr_uses_func('geom_histogram')
   Hint: google stat smooth function  
   
 - Class: text
