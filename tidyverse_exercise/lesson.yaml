@@ -1,9 +1,9 @@
 - Class: meta
   Course: exercise_REcoStat2020
   Lesson: tidyverse_exercise
-  Author: your name goes here
+  Author: Maria Novosolov
   Type: Standard
-  Organization: your organization's name goes here
+  Organization: University of Copenhagen
   Version: 2.4.5
 
 - Class: text
@@ -51,26 +51,27 @@
 - Class: text
   Output: |
     From here on if I ask you to add something I mean add a line of code to your thread of pipes.
-    If I want you to start a new thread I will write so. In all cases I want you to asign it back
-    to pan.data. If you did some change in the data that looks wierd you can type play() in the console
-    fix it and then nxt() to continue with the assignment.
-    
+    If I want you to start a new thread or to save it to a new object I will write so. In all other cases
+    I want you to asign it back to pan.data. If you did some change in the data that looks wierd you can 
+    type play() in the console fix it and then nxt() to continue with the assignment.
+
 - Class: cmd_question
   Output: |
     We want to change the columns of DietBreadth and HabitatBreadth to characters so 
     that it will be easier to work with them. Add a line of code that will change the columns
     to character
-  CorrectAnswer: pan.data<- pan.data %>% mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
-  AnswerTests: val_matches('[DietBreadth&HabitatBreadth]')
+  CorrectAnswer: pan.data<- pan.data %>% 
+    mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
+  AnswerTests: expr_uses_func('as.character')
   Hint: Use the mutate function and the as.character inside it. It can hold more than one changing command
   
 - Class: cmd_question
-  Order: |
+  Output: |
     Species productivity is the multiplication of litter per year, nenate body mass, and litter size.
     Let's calculate it and add it to our dataset.
   CorrectAnswer: pan.data<- pan.data %>% 
     mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth)) %>% 
-    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass_g)
+    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass)
   AnswerTests: expr_uses_func("mutate")
   Hint: Check in the presentation which function we used to calculated bmi and return it back to the dataset as a column
   
@@ -83,14 +84,14 @@
     group_by(Order) %>% 
     summarise(count = n()) %>% 
     arrange(desc(count))
-  AnswerTests: expr_uses_func("[summarise|summarize]")
+  AnswerTests: expr_uses_func("summarise")
   Hint: Go back to the class and see how we used the function summarize
   
 - Class: text_question
   Output: |
     This is a text question: which are the 5 largest orders?
   CorrectAnswer: Rodentia, Chiroptera, Primates, Carnivora, and Artiodactyla
-  AnswerTests: val_matches("[Rodentia&Chiroptera&Primates&Carnivora&Artiodactyla]")
+  AnswerTests: val_matches("[Rodentia&Chiroptera&Primates&Carnivora&Artiodactyla&Soricomorpha]")
   Hint: |
     The answer should be based on the summary table you created before so make sure you arranged
     by the number of species
@@ -98,11 +99,11 @@
 - Class: cmd_question
   Output: |
     Filter the dataset to have only these orders. Add the filtering command as a line to your code
-    from two questions above
-  CorrectAnswer: pan.data<- pan.data %>% 
+    from two questions above. Assign it to sub.pan.data
+  CorrectAnswer: sub.pan.data<- pan.data %>% 
     mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
     mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass_g) %>% 
-    filter(Order %in% c("Rodentia","Chiroptera","Primates","Carnivora","Artiodactyla"))
+    filter(Order %in% c("Rodentia","Chiroptera","Primates","Carnivora","Artiodactyla","Soricomorpha"))
   AnswerTests: expr_uses_func("filter")
   Hint: Checkout this link:https://blog.exploratory.io/filter-data-with-dplyr-76cf5f1a258e
 
@@ -110,7 +111,7 @@
   Output: |
     Calculate the avarage body mass, home range, and population density for each family in your data.
     You can either assign it to a new object and then print it or just not assign it
-  CorrectAnswer: pan.data %>% 
+  CorrectAnswer: sub.pan.data %>% 
     group_by(Family) %>% 
     summarize(mean_body_mass = mean(AdultBodyMass,na.rm = T),mean_home_range = mean(HomeRange,na.rm = T),mean_density = mean(PopulationDensity,na.rm = T))
   AnswerTests: expr_uses_func("group_by")
@@ -136,7 +137,7 @@
     interested in. Don't forget to select the columns you are interested in rather than leaving all
     the columns. Save the result to a new object called pan.plot. 
     Remember! We want to use adult mass as the x-axis in our plot.
-  CorrectAnswer: pan.plot<- pan.data %>% 
+  CorrectAnswer: pan.plot<- sub.pan.data %>% 
     select(Order,Binomial,ActivityCycle,AdultBodyMass,LitterSize,LittersPerYear,NeonateBodyMass_g,productivity) %>% 
     pivot_longer(cols = -c(Order,Binomial,AdultBodyMass,ActivityCycle),names_to = "reproduction",values_to = "values")
   AnswerTests: expr_uses_func("pivot_longer")
@@ -146,16 +147,18 @@
   Output: |
     Now lets plot a bit. Our first plot is the reproductive characteristics as a function of bodymass.
     One for each order. Try to interperate the plot and its biological meaning. 
+    Don't forget to log transform wehre needed
   CorrectAnswer: ggplot(pan.plot,aes(log_AdultBodyMass,log_reproduction,color = reproduction))+
     geom_point()+
     facet_wrap(Order~.,scales = "free_x")
   AnswerTests: expr_uses_func("facet_wrap")
   Hint: Use facet to create the plot pannels
-  
+
 - Class: cmd_question
   Output: |
-    Now plot the reproductive characteristics as a function of activity cycle and make a seperate
-    plor for each order. Try to interperate the plot and its biological meaning.
+    Plot the reproductive characteristics as a function of activity cycle and make a seperate
+    plot for each order. Try to interperate the plot and its biological meaning.
+    Don't forget to log transform wehre needed
   CorrectAnswer: ggplot(pan.plot,aes(ActivityCycle,log_reproduction,fill = reproduction))+
     geom_boxplot()+
     facet_wrap(Order~.,scales = "free_x")
@@ -168,3 +171,4 @@
   Output: |
     Congratulations! You completed the excercise. Rmember to write everything in an Rmd. With 
     Explanations of what you did and some interperation for the plots and their biological meaning. 
+
