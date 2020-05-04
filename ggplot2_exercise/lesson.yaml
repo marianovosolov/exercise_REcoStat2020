@@ -181,7 +181,7 @@
   
 - Class: text
   Output: |
-    This is the final exercise whichI want you to add at the end of your Rmd. 
+    This is the final exercise which I want you to add at the end of your Rmd. 
     Here we will try to learn how to create publication quality plots.
     Please put the following several plots side by side - 
     1. population density vs body mass with trophic level as a grouping 
