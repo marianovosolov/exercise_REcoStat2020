@@ -5,3 +5,170 @@
   Type: Standard
   Organization: your organization's name goes here
   Version: 2.4.5
+
+- Class: text
+  Output: |
+    In this excercise you will learn how to do some basic data mining in our dataset. 
+    For this excercise we will use the sun_PANTHERIA dataset that you used for the ggplot session.
+    We are going to do some manipulations  on it and some plotting.
+    Let's get started! Good luck!
+    
+- Class: text
+  Output: Before we start make sure you have the data downloaded and you know the path to it :)
+  
+- Class: cmd_question
+  Output: Set the working directory to where you store your data
+  CorrectAnswer: setwd("~/your/path/to/the/data/folder")
+  AnswerTests: expr_uses_func('setwd')
+  Hint: Type the path to where your data is inside double quotes
+  
+- Class: cmd_question
+  Output: load the tidyverse package
+  CorrectAnswer: library(tidyverse)
+  AnswerTests: omnitest(correctExpr = 'library(tidyverse)')
+  Hint: use the function library
+  
+- Class: cmd_question
+  Output: load the ggplot2 package
+  CorrectAnswer: library(ggplot2)
+  AnswerTests: omnitest(correctExpr = 'library(ggplot2)')
+  Hint: use the function library
+
+- Class: cmd_question
+  Output: |
+    load the sub_PANTHERIA dataset and assign it to pan.data. 
+  CorrectAnswer: pan.data <- read_csv("your/path/to/the/csv",delim = "\t")
+  AnswerTests: expr_uses_func('read_csv')
+  Hint: use the a function to read tab delimited data that I showed in the class 
+  
+- Class: cmd_question
+  Output: |
+    Print the data to look at it
+  CorrectAnswer: pan.data
+  AnswerTests: omnitest(correctExpr = 'pan.data')
+  Hint: Check out the presentation to see how we view data in the console with tibbles
+
+- Class: text
+  Output: |
+    From here on if I ask you to add something I mean add a line of code to your thread of pipes.
+    If I want you to start a new thread I will write so. In all cases I want you to asign it back
+    to pan.data. If you did some change in the data that looks wierd you can type play() in the console
+    fix it and then nxt() to continue with the assignment.
+    
+- Class: cmd_question
+  Output: |
+    We want to change the columns of DietBreadth and HabitatBreadth to characters so 
+    that it will be easier to work with them. Add a line of code that will change the columns
+    to character
+  CorrectAnswer: pan.data<- pan.data %>% mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
+  AnswerTests: val_matches('[DietBreadth&HabitatBreadth]')
+  Hint: Use the mutate function and the as.character inside it. It can hold more than one changing command
+  
+- Class: cmd_question
+  Order: |
+    Species productivity is the multiplication of litter per year, nenate body mass, and litter size.
+    Let's calculate it and add it to our dataset.
+  CorrectAnswer: pan.data<- pan.data %>% 
+    mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth)) %>% 
+    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass_g)
+  AnswerTests: expr_uses_func("mutate")
+  Hint: Check in the presentation which function we used to calculated bmi and return it back to the dataset as a column
+  
+- Class: cmd_question
+  Output: |
+    We want to work only on the 5 largest orders in our dataset. I want you to use tidyverse syntax
+    to findout whi they are. You want to calculate how many species are in each order. But we don't
+    to use that data later so just print it to the console and don't save it to a new variable
+  CorrectAnswer: pan.data %>% 
+    group_by(Order) %>% 
+    summarise(count = n()) %>% 
+    arrange(desc(count))
+  AnswerTests: expr_uses_func("[summarise|summarize]")
+  Hint: Go back to the class and see how we used the function summarize
+  
+- Class: text_question
+  Output: |
+    This is a text question: which are the 5 largest orders?
+  CorrectAnswer: Rodentia, Chiroptera, Primates, Carnivora, and Artiodactyla
+  AnswerTests: val_matches("[Rodentia&Chiroptera&Primates&Carnivora&Artiodactyla]")
+  Hint: |
+    The answer should be based on the summary table you created before so make sure you arranged
+    by the number of species
+
+- Class: cmd_question
+  Output: |
+    Filter the dataset to have only these orders. Add the filtering command as a line to your code
+    from two questions above
+  CorrectAnswer: pan.data<- pan.data %>% 
+    mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
+    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass_g) %>% 
+    filter(Order %in% c("Rodentia","Chiroptera","Primates","Carnivora","Artiodactyla"))
+  AnswerTests: expr_uses_func("filter")
+  Hint: Checkout this link:https://blog.exploratory.io/filter-data-with-dplyr-76cf5f1a258e
+
+- Class: cmd_question
+  Output: |
+    Calculate the avarage body mass, home range, and population density for each family in your data.
+    You can either assign it to a new object and then print it or just not assign it
+  CorrectAnswer: pan.data %>% 
+    group_by(Family) %>% 
+    summarize(mean_body_mass = mean(AdultBodyMass,na.rm = T),mean_home_range = mean(HomeRange,na.rm = T),mean_density = mean(PopulationDensity,na.rm = T))
+  AnswerTests: expr_uses_func("group_by")
+  Hint: |
+    You want to apply similar functions to subsets of your data based on Family. Try to remember
+    how we did that in class
+  
+- Class: text_question
+  Output: |
+    We want to plot litter size, number of litters per year, neonate body mass and productivity 
+    as a function of body mass in one plot and create a different plot for each order. We also want
+    to plot these variables as a function of Activity cycle. 
+    To do that we need to create one column for all the column names and one column for the 
+    values they represent. Which function did we use to do something similar in the class?
+    (this is a text question and not a code question)
+  CorrectAnswer: pivot_loger
+  AnswerTests: val_matches("pivot_longer")
+  Hint: Check the class slides for pivoting data
+  
+- Class: cmd_question
+  Output: |
+    Now lets use that function you identified earlier to create a long format of the data we are
+    interested in. Don't forget to select the columns you are interested in rather than leaving all
+    the columns. Save the result to a new object called pan.plot. 
+    Remember! We want to use adult mass as the x-axis in our plot.
+  CorrectAnswer: pan.plot<- pan.data %>% 
+    select(Order,Binomial,ActivityCycle,AdultBodyMass,LitterSize,LittersPerYear,NeonateBodyMass_g,productivity) %>% 
+    pivot_longer(cols = -c(Order,Binomial,AdultBodyMass,ActivityCycle),names_to = "reproduction",values_to = "values")
+  AnswerTests: expr_uses_func("pivot_longer")
+  Hint: Remember that some columns need to be chosen as not changing to get the right structure of the data
+
+- Class: cmd_question
+  Output: |
+    Now lets plot a bit. Our first plot is the reproductive characteristics as a function of bodymass.
+    One for each order. Try to interperate the plot and its biological meaning. 
+  CorrectAnswer: ggplot(pan.plot,aes(log_AdultBodyMass,log_reproduction,color = reproduction))+
+    geom_point()+
+    facet_wrap(Order~.,scales = "free_x")
+  AnswerTests: expr_uses_func("facet_wrap")
+  Hint: Use facet to create the plot pannels
+  
+- Class: cmd_question
+  Output: |
+    Now plot the reproductive characteristics as a function of activity cycle and make a seperate
+    plor for each order. Try to interperate the plot and its biological meaning.
+  CorrectAnswer: ggplot(pan.plot,aes(ActivityCycle,log_reproduction,fill = reproduction))+
+    geom_boxplot()+
+    facet_wrap(Order~.,scales = "free_x")
+  AnswerTests: expr_uses_func("geom_boxplot")
+  Hint: |
+    Remember that when the x is categorical you can't use geom_point. Try to remeber which plots 
+    are good for categorical data
+    
+- Class: text
+  Output: |
+    Congratulations! You completed the excercise. Rmember to write everything in an Rmd. With 
+    Explanations of what you did and some interperation for the plots and their biological meaning. 
+  
+  
+  
+  
