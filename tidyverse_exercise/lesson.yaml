@@ -77,7 +77,7 @@
   
 - Class: cmd_question
   Output: |
-    We want to work only on the 5 largest orders in our dataset. I want you to use tidyverse syntax
+    We want to work only on the 6 largest orders in our dataset. I want you to use tidyverse syntax
     to findout whi they are. You want to calculate how many species are in each order. But we don't
     to use that data later so just print it to the console and don't save it to a new variable
   CorrectAnswer: pan.data %>% 
