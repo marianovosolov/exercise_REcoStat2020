@@ -146,8 +146,8 @@
 - Class: cmd_question
   Output: |
     Now lets plot a bit. Our first plot is the reproductive characteristics as a function of bodymass.
-    One for each order. Try to interperate the plot and its biological meaning. 
-    Don't forget to log transform wehre needed
+    One for each order. Try to interpret the plot and its biological meaning. 
+    Don't forget to log transform where needed
   CorrectAnswer: ggplot(pan.plot,aes(log_AdultBodyMass,log_reproduction,color = reproduction))+
     geom_point()+
     facet_wrap(Order~.,scales = "free_x")
@@ -156,9 +156,9 @@
 
 - Class: cmd_question
   Output: |
-    Plot the reproductive characteristics as a function of activity cycle and make a seperate
-    plot for each order. Try to interperate the plot and its biological meaning.
-    Don't forget to log transform wehre needed
+    Plot the reproductive characteristics as a function of activity cycle and make a separate
+    plot for each order. Try to interpret the plot and its biological meaning.
+    Don't forget to log transform where needed.
   CorrectAnswer: ggplot(pan.plot,aes(ActivityCycle,log_reproduction,fill = reproduction))+
     geom_boxplot()+
     facet_wrap(Order~.,scales = "free_x")
