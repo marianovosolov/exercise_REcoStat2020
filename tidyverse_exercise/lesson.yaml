@@ -101,10 +101,10 @@
     Filter the dataset to have only these orders. Add the filtering command as a line to your code
     from two questions above. Assign it to sub.pan.data
   CorrectAnswer: sub.pan.data<- pan.data %>% 
-    mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
+    mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth)) %>% 
     mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass) %>% 
     filter(Order %in% c("Rodentia","Chiroptera","Primates","Carnivora","Artiodactyla","Soricomorpha"))
-  AnswerTests: expr_uses_func("filter")
+  AnswerTests: omnitest(correctExpr="sub.pan.data<- pan.data %>% mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth)) %>%  mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass) %>%  filter(Order %in% c('Rodentia','Chiroptera','Primates','Carnivora','Artiodactyla','Soricomorpha'))")
   Hint: Checkout this link:https://blog.exploratory.io/filter-data-with-dplyr-76cf5f1a258e
 
 - Class: cmd_question
