@@ -89,8 +89,8 @@
   
 - Class: text_question
   Output: |
-    This is a text question: which are the 5 largest orders?
-  CorrectAnswer: Rodentia, Chiroptera, Primates, Carnivora, and Artiodactyla
+    This is a text question: which are the 6 largest orders?
+  CorrectAnswer: Rodentia, Chiroptera, Primates, Carnivora, Artiodactyla, and Soricomorpha
   AnswerTests: val_matches("[Rodentia&Chiroptera&Primates&Carnivora&Artiodactyla&Soricomorpha]")
   Hint: |
     The answer should be based on the summary table you created before so make sure you arranged
