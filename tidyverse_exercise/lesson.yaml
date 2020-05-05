@@ -102,7 +102,7 @@
     from two questions above. Assign it to sub.pan.data
   CorrectAnswer: sub.pan.data<- pan.data %>% 
     mutate(DietBreadth = as.character(DietBreadth),HabitatBreadth = as.character(HabitatBreadth))
-    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass_g) %>% 
+    mutate(productivity = LitterSize*LittersPerYear*NeonateBodyMass) %>% 
     filter(Order %in% c("Rodentia","Chiroptera","Primates","Carnivora","Artiodactyla","Soricomorpha"))
   AnswerTests: expr_uses_func("filter")
   Hint: Checkout this link:https://blog.exploratory.io/filter-data-with-dplyr-76cf5f1a258e
@@ -138,7 +138,7 @@
     the columns. Save the result to a new object called pan.plot. 
     Remember! We want to use adult mass as the x-axis in our plot.
   CorrectAnswer: pan.plot<- sub.pan.data %>% 
-    select(Order,Binomial,ActivityCycle,AdultBodyMass,LitterSize,LittersPerYear,NeonateBodyMass_g,productivity) %>% 
+    select(Order,Binomial,ActivityCycle,AdultBodyMass,LitterSize,LittersPerYear,NeonateBodyMass,productivity) %>% 
     pivot_longer(cols = -c(Order,Binomial,AdultBodyMass,ActivityCycle),names_to = "reproduction",values_to = "values")
   AnswerTests: expr_uses_func("pivot_longer")
   Hint: Remember that some columns need to be chosen as not changing to get the right structure of the data
